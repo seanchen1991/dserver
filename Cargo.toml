@@ -1,11 +1,20 @@
 [package]
 name = "dserver"
 version = "0.1.0"
-authors = ["seanchen <skypemaster007@gmail.com>"]
+authors = ["Sean Chen <seanchen11235@gmail.com>"]
 edition = "2018"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+path = "src/main.rs"
+name = "dserver"
 
 [dependencies]
 actix-web = "3.3.2"
 actix-rt = "1.1.1"
+
+[dev-dependencies]
+reqwest = "0.10.10"
+tokio = "0.2.22"
