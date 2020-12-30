@@ -12,9 +12,15 @@ path = "src/main.rs"
 name = "dserver"
 
 [dependencies]
-actix-web = "3.3.2"
+actix-web = "3.0.0"
 actix-rt = "1.1.1"
+tokio = "0.2.22"
+serde = "1.0.115"
+config = { version = "0.10.1", default-features = false, features = ["yaml"] }
+tracing-log = "0.1.1"
+tracing-actix-web = "0.2.0"
+serde-aux = "1.0.1"
 
 [dev-dependencies]
-reqwest = "0.10.10"
-tokio = "0.2.22"
+reqwest = { version = "0.10.7", features = ["json"] }
+lazy_static = "1.4.0"

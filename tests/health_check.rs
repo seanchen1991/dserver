@@ -1,14 +1,20 @@
+use dserver::{configuration::get_configuration, startup::run};
 use std::net::TcpListener;
 
 const RANDOM_PORT: &str = "127.0.0.1:0";
+const HOST: &str = "http://127.0.0.1";
+
+pub struct TestApp {
+    pub address: String,
+}
 
 #[actix_rt::test]
 async fn health_check_works() {
-    let address = spawn_app();
+    let app = spawn_app().await;
     let client = reqwest::Client::new();
 
     let response = client
-        .get(&format!("{}/health_check", &address))
+        .get(&format!("{}/health_check", &app.address))
         .send()
         .await
         .expect("Failed to execute request.");
@@ -17,12 +23,15 @@ async fn health_check_works() {
     assert_eq!(Some(0), response.content_length());
 }
 
-fn spawn_app() -> String {
+async fn spawn_app() -> TestApp {
     let listener = TcpListener::bind(RANDOM_PORT).expect("Failed to bind to random port");
     let port = listener.local_addr().unwrap().port();
+    let address = format!("{}:{}", HOST, port);
 
-    let server = dserver::run(listener).expect("Failed to bind to address");
+    let _configuration = get_configuration().expect("Failed to read configuration");
+
+    let server = run(listener).expect("Failed to bind to address");
     let _ = tokio::spawn(server);
 
-    format!("http://127.0.0.1:{}", port)
+    TestApp { address }
 }

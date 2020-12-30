@@ -1,10 +1,16 @@
-use dserver::run;
+use dserver::{configuration::get_configuration, startup::run};
 use std::net::TcpListener;
-
-const PORT: &str = "127.0.0.1:0";
 
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
-    let listener = TcpListener::bind(PORT).expect("Failed to bind to port 8000");
-    run(listener)?.await
+    let configuration = get_configuration().expect("Failed to read configuration.");
+    let address = format!(
+        "{}:{}",
+        configuration.application.host, configuration.application.port
+    );
+
+    let listener = TcpListener::bind(address)?;
+    run(listener)?.await?;
+
+    Ok(())
 }
