@@ -1,8 +1,8 @@
 # Specification file for deploying to Digital Ocean
-name: dserver
+name: another-dserver
 region: nyc
 services:
-    - name: dserver
+  - name: another-dserver
     dockerfile_path: Dockerfile
     source_dir: .
     github:
@@ -15,4 +15,4 @@ services:
     instance_count: 1
     instance_size_slug: basic-xxs
     routes:
-        - path: /
+      - path: /
